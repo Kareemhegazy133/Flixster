@@ -1,6 +1,7 @@
 package com.khegazy.flixster.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,20 +48,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvTitle;
-        TextView tvOveview;
+        TextView tvOverview;
         ImageView ivPoster;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOveview = itemView.findViewById(R.id.tvOverview);
+            tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
-            tvOveview.setText(movie.getOverview());
-            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
+            tvOverview.setText(movie.getOverview());
+
+            String imageURL;
+            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                imageURL = movie.getBackdropPath();
+            }
+            else{
+                imageURL = movie.getPosterPath();
+            }
+            Glide.with(context).load(imageURL).into(ivPoster);
         }
     }
 
